@@ -5,6 +5,7 @@ import Cart from './Cart';
 const App = () => {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [showCart, setShowCart] = useState(false);
 
   useEffect(() => {
     fetchProducts();
@@ -34,9 +35,33 @@ const App = () => {
     setCartItems(cartItems.filter((item) => item.uniqueId !== product.uniqueId));
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
+  const openCart = () => {
+    setShowCart(true);
+  };
+
+  const closeCart = () => {
+    setShowCart(false);
+  };
+
+  const buttonStyle = {
+    backgroundColor: '#000',
+    color: '#FFB6C1',
+    padding: '10px 20px',
+    borderRadius: '5px',
+    fontSize: '16px',
+    border: 'none',
+    cursor: 'pointer',
+    margin: '10px 0',
+  };
+
   return (
     <div>
-      {cartItems.length > 0 && <Cart cartItems={cartItems} removeFromCart={removeFromCart} />}
+      {showCart && <Cart cartItems={cartItems} removeFromCart={removeFromCart} clearCart={clearCart} closeCart={closeCart} />}
+      <button style={buttonStyle} onClick={openCart}>Open Cart</button>
       <ProductList products={products} addToCart={addToCart} />
     </div>
   );
